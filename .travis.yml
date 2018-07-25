@@ -1,13 +1,17 @@
-dist: bionic
 language: cpp
 addons:
   apt:
     sources:
+      - ubuntu-toolchain-r-test
     packages:
       - gcc-7
       - g++-7
-      - python3
-      - cmake
+install:
+  - "[ $CXX = g++ ] && export CXX=g++-7 || true"
+  - "[ $CC = gcc ] && export CC=gcc-7 || true"
 before_script:
-  ./build_3rdparty.sh
 script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build . --target all

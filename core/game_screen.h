@@ -1,0 +1,52 @@
+#pragma once
+
+// project includes
+#include "game_scene.h"
+#include "game_state.h"
+#include "event_handler.h"
+
+// STL includes
+#include <memory>
+#include <map>
+#include <cstdint>
+
+namespace core
+{
+    class game_screen;
+
+    typedef std::shared_ptr<game_screen> game_screen_p;
+
+    template< class T, typename... Args >
+    game_screen_p create_game_screen( Args... args )
+    {
+        static_assert( std::is_base_of<game_screen, T>::value );
+        return game_screen_p( new T( args... ) );
+    }
+
+    class game_screen
+    {
+    public:
+        game_screen( game_state_p state, game_scene_p scene );
+
+        virtual ~game_screen();
+
+        virtual void on_enter() = 0;
+
+        virtual void on_leave() = 0;
+
+        game_state_p state();
+
+        game_scene_p scene();
+
+        void add_event_handler( uint32_t event_type, event_handler handler );
+
+        std::map<uint32_t, event_handler>& event_handlers();
+
+    private:
+        std::map<uint32_t, event_handler> _event_handlers;
+        game_scene_p _scene;
+        game_state_p _state;
+    };
+
+
+}

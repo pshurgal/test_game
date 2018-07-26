@@ -1,18 +1,20 @@
-#include "core/application.h"
+#include "core/game.h"
+#include "core/logger.h"
 
 #include <iostream>
 
 using namespace std;
+using namespace core;
 
 int main()
 {
     int result = 0;
 
     try {
-        Application app;
-        result = app.exec();
-    } catch (std::exception e) {
-        std::cerr << e.what();
+        logger::instance().init();
+        result = game::instance().exec();
+    } catch (std::exception& e) {
+        LOG(FATAL) << e.what();
     }
 
     return result;

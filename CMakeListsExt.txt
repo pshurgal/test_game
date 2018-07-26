@@ -1,18 +1,47 @@
 include(ExternalProject)
 
 ExternalProject_Add(
-  SDL2
+    SDL2
 
-  URL "https://www.libsdl.org/release/SDL2-2.0.8.tar.gz"
+    URL "https://www.libsdl.org/release/SDL2-2.0.8.tar.gz"
 
-  SOURCE_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty/SDL2"
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GLOBAL_OUTPUT_PATH}/3rdparty_build/SDL2
-)
+    SOURCE_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty/SDL2"
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GLOBAL_OUTPUT_PATH}/3rdparty_build/SDL2
+    )
+
+ExternalProject_Add(
+    SDL2_image
+
+    URL "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.3.tar.gz"
+
+    SOURCE_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty/SDL2_image"
+
+    CONFIGURE_COMMAND ${GLOBAL_OUTPUT_PATH}/3rdparty/SDL2_image/configure --prefix=${GLOBAL_OUTPUT_PATH}/3rdparty_build/SDL2
+    PREFIX ${GLOBAL_OUTPUT_PATH}/3rdparty_build/SDL2
+    BUILD_COMMAND make
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make install
+    )
 
 set(SDL2_INCLUDE_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty_build/SDL2/include")
 set(SDL2_LIBRARIES_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty_build/SDL2/lib")
+set(SDL2_LIBRARIES libSDL2.so libSDL2_image.so)
 
-set(THIRDPARTY_INCLUDE_PATHS ${SDL2_INCLUDE_DIR})
-set(THIRDPARTY_LIBRARIES_PATHS ${SDL2_LIBRARIES_DIR})
-set(THIRDPARTY_LIBRARIES libSDL2.so)
-set(THIRDPARTY_DEPENDENCIES SDL2)
+ExternalProject_Add(
+    g3log
+
+    GIT_REPOSITORY "https://github.com/KjellKod/g3log.git"
+    GIT_TAG "master"
+
+    SOURCE_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty/g3log"
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GLOBAL_OUTPUT_PATH}/3rdparty_build/g3log -DUSE_DYNAMIC_LOGGING_LEVELS=ON
+    )
+
+set(g3log_INCLUDE_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty_build/g3log/include")
+set(g3log_LIBRARIES_DIR "${GLOBAL_OUTPUT_PATH}/3rdparty_build/g3log/lib")
+set(g3log_LIBRARIES libg3logger.so pthread)
+
+set(THIRDPARTY_INCLUDE_PATHS ${SDL2_INCLUDE_DIR} ${g3log_INCLUDE_DIR})
+set(THIRDPARTY_LIBRARIES_PATHS ${SDL2_LIBRARIES_DIR} ${g3log_LIBRARIES_DIR})
+set(THIRDPARTY_LIBRARIES ${SDL2_LIBRARIES} ${g3log_LIBRARIES})
+set(THIRDPARTY_DEPENDENCIES SDL2 SDL2_image g3log)

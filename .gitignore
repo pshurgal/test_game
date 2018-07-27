@@ -20,6 +20,7 @@
 core
 build/
 cmake-build/
+cmake-build-*/
 !core/
 tags
 .DS_Store
@@ -40,6 +41,9 @@ Thumbs.db
 # qtcreator generated files
 *.pro.user*
 CMakeLists.txt.user
+
+# clion generated files
+.idea/
 
 # xemacs temporary files
 *.flc

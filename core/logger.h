@@ -7,10 +7,11 @@
 #include "g3log/logworker.hpp"
 
 // STL includes
+#include <memory>
 
 namespace core
 {
-    const LEVELS ERROR{ 700, { "ERROR" } };
+    const static LEVELS ERROR{ 700, { "ERROR" } };
 
     class logger
     {

@@ -2,16 +2,24 @@ language: cpp
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - gcc-7
-      - g++-7
+    - gcc-7
+    - g++-7
 install:
-  - "[ $CXX = g++ ] && export CXX=g++-7 || true"
-  - "[ $CC = gcc ] && export CC=gcc-7 || true"
+- "[ $CXX = g++ ] && export CXX=g++-7 || true"
+- "[ $CC = gcc ] && export CC=gcc-7 || true"
 before_script:
 script:
-  - mkdir build
-  - cd build
-  - cmake ..
-  - cmake --build . --target all
+- mkdir build
+- cd build
+- cmake ..
+- cmake --build . --target all
+- cmake --build . --target create_zip
+deploy:
+  provider: releases
+  api_key:
+    secure: $API_TOKEN
+  file: build/test_game.zip
+  on:
+    repo: pshurgal/test_game

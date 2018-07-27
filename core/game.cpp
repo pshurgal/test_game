@@ -5,7 +5,7 @@
 #include "core/sdl_types_factory.h"
 #include "game_screen_manager.h"
 #include "game_scene_renderer.h"
-#include "game_screens/sample_game_screen.h"
+#include "game_screens/level_game_screen.h"
 #include "core/logger.h"
 
 // thirdparty includes
@@ -24,8 +24,8 @@ namespace core
             _window = sdl_types_factory::get_window( "The Game",
                                                      SDL_WINDOWPOS_UNDEFINED,
                                                      SDL_WINDOWPOS_UNDEFINED,
-                                                     1024,
-                                                     768,
+                                                     SCREEN_WIDTH,
+                                                     SCREEN_HEIGHT,
                                                      SDL_WINDOW_SHOWN );
 
             _renderer = sdl_types_factory::get_renderer( _window, -1, SDL_RENDERER_ACCELERATED );
@@ -33,7 +33,7 @@ namespace core
             _game_scene_renderer.set_renderer( _renderer );
 
             game_screen_manager::instance().push_game_screen(
-                    create_game_screen<game_screens::sample_game_screen>( _renderer ) );
+                    create_game_screen<game_screens::level_game_screen>( _renderer ) );
         } catch( std::exception& ex )
         {
             SDL_Quit();

@@ -6,6 +6,7 @@
 
 // STL includes
 #include <memory>
+#include <cstdint>
 
 namespace core
 {
@@ -22,6 +23,10 @@ namespace core
         int exec();
 
         void signal_shutdown();
+
+    public:
+        static const size_t SCREEN_WIDTH = 1024;
+        static const size_t SCREEN_HEIGHT = 768;
 
     private:
         bool _shutdown_signalled = false;

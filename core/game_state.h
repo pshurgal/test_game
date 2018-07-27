@@ -7,6 +7,17 @@
 
 namespace core
 {
+    class game_state;
+
+    typedef std::shared_ptr<game_state> game_state_p;
+
+    template< class T, typename... Args >
+    game_state_p create_game_state( Args... args )
+    {
+        static_assert( std::is_base_of<game_state, T>::value );
+        return game_state_p( new T( args... ) );
+    }
+
     class game_state
     {
     public:
@@ -16,6 +27,4 @@ namespace core
 
     private:
     };
-
-    typedef std::shared_ptr<game_state> game_state_p;
 }

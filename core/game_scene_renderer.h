@@ -3,6 +3,7 @@
 // project includes
 #include "game_scene.h"
 #include "sdl_types.h"
+#include "drawable.h"
 
 // STL includes
 #include <functional>

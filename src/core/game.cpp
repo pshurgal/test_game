@@ -2,11 +2,11 @@
 
 // project includes
 #include "event_loop.h"
-#include "core/sdl_types_factory.h"
+#include "sdl_types_factory.h"
 #include "game_screen_manager.h"
 #include "game_scene_renderer.h"
-#include "game_screens/level_game_screen.h"
-#include "core/logger.h"
+#include "core/game_screens/level_game_screen.h"
+#include "logger.h"
 
 // thirdparty includes
 #define SDL_MAIN_HANDLED

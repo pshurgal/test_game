@@ -1,8 +1,8 @@
 #pragma once
 
 // project includes
-#include "core/sdl_types.h"
-#include "core/game_state.h"
+#include "sdl_types.h"
+#include "game_state.h"
 
 namespace core
 {

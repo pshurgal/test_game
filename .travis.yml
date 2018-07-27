@@ -9,7 +9,7 @@ addons:
 install:
 - "[ $CXX = g++ ] && export CXX=g++-7 || true"
 - "[ $CC = gcc ] && export CC=gcc-7 || true"
-before_script:
+before_script: 
 script:
 - mkdir build
 - cd build
@@ -21,7 +21,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-    secure: $API_TOKEN
+    secure: qEdEGPtboH34Y6pI4auhUbqY2wI2SG9lPF/JlcMX4iftpSzN6dLJczfNXAcRaM0+LpfvbeIZJ6Wp3YX0gje5o69C8oDxFaB+qkRNU0jEgGzsay3vqhNLfbP87Qc8K+nT5fZrtEJJYqJNMD2oUHzCz4bXydN0T2efKGamEiaZ+bhkQcQzx6dQVetMZ8snBdap6eev6cbx/R8e5S30vpWlJSAapOcA2zzyLPcsF2+vEHhiZQ2cGyAxXjwBTeQnjZwlXMvyplfmLSe4jyVlh+Yu4tvcvKnwVezx6S+g8gFoyIXekpAGNdYu7or7n4lZJyp52CBw+RAyw1QorlZF1ZC73YTmiQYoODfCAKKfmLUmeKMiISnz3ulqWf7rLlizDugjccWdOHVB91JtuuYCjEa+D8lxc8idCBNKDsazzhRznm0RmfdPy//wyEO2VPeM26/23KzfNH/Dqe4YT56lVhzX0+MvrYARdJ7L1UgsOQCEtxkA2kv5o6XmhzyxYxRwKwwxBzw7p6zlf9t5QVvhwvSsaFt+VgqTukxHFCVtrzh6LZVEHf9nYRGmUtIAP8Pq4LqpsfwIjSO9CHa2N4urPG7Bb+WQ7uwprDyhyVQRT2azvk5JQXmoOXljxGE/TwrSfHBTvvzhZY59uWGFt5jpDY+mg2pllvW0DTpDmC0wH+VWc5I=
   file: test_game.zip
   on:
     tags: true

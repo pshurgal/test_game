@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(GLOBAL_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif (NOT CMAKE_BUILD_TYPE)
+
 include(CMakeListsExt.txt)
 
 include_directories(${THIRDPARTY_INCLUDE_PATHS} ${CMAKE_SOURCE_DIR})

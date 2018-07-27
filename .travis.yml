@@ -15,11 +15,13 @@ script:
 - cd build
 - cmake ..
 - cmake --build . --target all
+before_deploy:
+- cmake --build . --target install
 - cmake --build . --target create_zip
 deploy:
   provider: releases
   api_key:
     secure: $API_TOKEN
-  file: build/test_game.zip
+  file: test_game.zip
   on:
-    repo: pshurgal/test_game
+    tags: true

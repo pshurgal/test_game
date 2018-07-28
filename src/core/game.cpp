@@ -44,6 +44,7 @@ namespace core
 
     game::~game()
     {
+        game_screen_manager::instance().pop_all_game_screens();
         SDL_Quit();
     };
 

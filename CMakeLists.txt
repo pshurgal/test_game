@@ -23,6 +23,9 @@ set(IMAGES
         resources/images/player_2.png
         resources/images/player_3.png)
 
+set(SCRIPTS
+        resources/test_game.sh)
+
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_dependencies(${PROJECT_NAME} ${THIRDPARTY_DEPENDENCIES})
 
@@ -33,11 +36,26 @@ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 target_link_libraries(${PROJECT_NAME} ${THIRDPARTY_LIBRARIES})
 
-set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
-install(FILES ${IMAGES}
-        DESTINATION ${PROJECT_BINARY_DIR}/resources/images)
+if (NOT CMAKE_INSTALL_PREFIX)
+    set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
+endif ()
 
-add_custom_target(create_zip COMMAND
-        ${CMAKE_COMMAND} -E tar "cfv" "${PROJECT_BINARY_DIR}/test_game.zip" --format=zip
-        "${PROJECT_BINARY_DIR}/${PROJECT_NAME}"
-        "${PROJECT_BINARY_DIR}/resources")
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(
+        CODE "file( GLOB SO_LIBRARIES \"${GLOBAL_OUTPUT_PATH}/3rdparty_build/lib/*.so\" )"
+        CODE "file( INSTALL \${SO_LIBRARIES} DESTINATION \"${CMAKE_INSTALL_PREFIX}/lib\" )"
+)
+install(
+        CODE "file( GLOB SO_LIBRARIES \"${GLOBAL_OUTPUT_PATH}/3rdparty_build/lib/*.so.*\" )"
+        CODE "file( INSTALL \${SO_LIBRARIES} DESTINATION \"${CMAKE_INSTALL_PREFIX}/lib\" )"
+)
+install(FILES ${SCRIPTS} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+install(FILES ${IMAGES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/test_game/images)
+
+add_custom_target(create_zip
+        COMMAND
+        ${CMAKE_COMMAND} -E tar "cfv" "${CMAKE_INSTALL_PREFIX}/test_game.zip" --format=zip
+        "${CMAKE_INSTALL_PREFIX}/bin"
+        "${CMAKE_INSTALL_PREFIX}/lib"
+        "${CMAKE_INSTALL_PREFIX}/share"
+        WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

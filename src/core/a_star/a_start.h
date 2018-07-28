@@ -12,7 +12,7 @@ namespace core
 {
     namespace a_star
     {
-        std::list<math::vec2> get_path( const math::vec2& from, const math::vec2& to,
+        std::list<gameplay::direction_e> get_path( const math::vec2& from, const math::vec2& to,
                                                gameplay::cell_field_p cell_field );
     }
 }

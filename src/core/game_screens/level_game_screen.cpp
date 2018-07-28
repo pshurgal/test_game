@@ -51,21 +51,24 @@ namespace core
                     auto point = state_converted->camera.screen_coords_to_world_coords( e.button.x, e.button.y );
                     auto tile = state_converted->cell_field->click_point( point.x, point.y );
 
-                    state_converted->player_path = a_star::get_path( state_converted->player->position(),
-                                                                     tile,
-                                                                     state_converted->cell_field );
+                    if( tile.x != INT32_MIN )
+                    {
+                        state_converted->set_player_path( a_star::get_path( state_converted->player->position(),
+                                                                            tile,
+                                                                            state_converted->cell_field ) );
+                    }
                 }
             } );
         }
 
         void level_game_screen::on_enter()
         {
-
+            ((game_states::level_game_state*)state().get())->start_update_units();
         }
 
         void level_game_screen::on_leave()
         {
-
+            ((game_states::level_game_state*)state().get())->stop_update_units();
         }
     }
 }

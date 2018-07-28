@@ -62,9 +62,17 @@ namespace core
             return math::vec2( _field_x, _field_y );
         }
 
-        void player::move( direction_e )
+        void player::move( direction_e d )
         {
+            auto direction_vec = gameplay::direction_to_vec2( d );
 
+            _field_x += direction_vec.x;
+            _field_y += direction_vec.y;
+
+            _direction = d;
+
+            _world_x = 8 + (50 - 8) / 2 * _field_x - (50 - 8) / 2 * _field_y;
+            _world_y = -30 + (50 - 2) / 4 * _field_x + (50 - 2) / 4 * _field_y;
         }
 
         player_p create_player( int32_t x, int32_t y, const std::string& texture_0, const std::string& texture_1,

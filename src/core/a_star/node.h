@@ -2,6 +2,7 @@
 
 // project includes
 #include "math/vec2.h"
+#include "core/gameplay/direction.h"
 
 // STL includes
 #include <memory>
@@ -18,6 +19,7 @@ namespace core
         struct node
         {
             math::vec2 coordinates;
+            gameplay::direction_e direction;
             node_p parent;
 
             uint32_t G;

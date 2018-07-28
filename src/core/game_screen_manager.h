@@ -21,6 +21,8 @@ namespace core
 
         void pop_game_screen();
 
+        void pop_all_game_screens();
+
         game_screen_p current_screen();
 
     private:

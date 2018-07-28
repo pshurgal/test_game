@@ -13,8 +13,8 @@ before_script:
 script:
 - mkdir cmake-build-release
 - cd cmake-build-release
-- cmake ..
-- cmake --build . --target all
+- cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install ..
+- cmake --build . -- -j 4
 before_deploy:
 - cmake --build . --target install
 - cmake --build . --target create_zip
@@ -23,6 +23,6 @@ deploy:
   api_key:
     secure: $GH_TOKEN
   skip_cleanup: true
-  file: test_game.zip
+  file: install/test_game.zip
   on:
     tags: true

@@ -28,4 +28,10 @@ namespace core
     {
         return _screens.top();
     }
+
+    void game_screen_manager::pop_all_game_screens()
+    {
+        while(!_screens.empty())
+            pop_game_screen();
+    }
 }

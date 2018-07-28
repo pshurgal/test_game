@@ -11,12 +11,6 @@ namespace core
 {
     namespace a_star
     {
-
-        const static std::map<gameplay::direction_e, math::vec2> directions = { { gameplay::direction_e::LEFT_DOWN,  { 0,  1 } },
-                                                                                { gameplay::direction_e::LEFT_UP,    { -1, 0 } },
-                                                                                { gameplay::direction_e::RIGHT_UP,   { 0,  -1 } },
-                                                                                { gameplay::direction_e::RIGHT_DOWN, { 1,  0 } } };
-
         node_p find_node( const node_set& set, const math::vec2& coordinates )
         {
             node_p result;
@@ -44,7 +38,7 @@ namespace core
             return uint32_t( std::sqrt( std::pow( delta.x, 2 ) + std::pow( delta.y, 2 ) ) );
         }
 
-        std::list<math::vec2> get_path( const math::vec2& from, const math::vec2& to,
+        std::list<gameplay::direction_e> get_path( const math::vec2& from, const math::vec2& to,
                                         gameplay::cell_field_p cell_field )
         {
             node_p current = nullptr;
@@ -71,9 +65,9 @@ namespace core
                 closed_set.insert( current );
                 open_set.erase( std::find( open_set.begin(), open_set.end(), current ) );
 
-                for( const auto& direction : gameplay::direction_e() )
+                for( const auto& direction : gameplay::direction_array )
                 {
-                    math::vec2 new_coordinates = current->coordinates + directions.at( direction );
+                    math::vec2 new_coordinates = current->coordinates + gameplay::direction_to_vec2(direction);
                     if( detect_collision( cell_field, new_coordinates ) ||
                         find_node( closed_set, new_coordinates ) )
                     {
@@ -86,6 +80,7 @@ namespace core
                     if( successor == nullptr )
                     {
                         successor = create_node( new_coordinates, current );
+                        successor->direction = direction;
                         successor->G = total_cost;
                         successor->H = heuristic( successor->coordinates, to );
                         open_set.insert( successor );
@@ -97,12 +92,13 @@ namespace core
                 }
             }
 
-            std::list<math::vec2> path;
+            std::list<gameplay::direction_e> path;
             while( current != nullptr )
             {
-                path.push_back( current->coordinates );
+                path.push_back( current->direction );
                 current = current->parent;
             }
+            path.pop_back();
 
             return path;
         }

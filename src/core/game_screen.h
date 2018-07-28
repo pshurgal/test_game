@@ -30,10 +30,6 @@ namespace core
 
         virtual ~game_screen();
 
-        virtual void on_enter() = 0;
-
-        virtual void on_leave() = 0;
-
         game_state_p state();
 
         game_scene_p scene();

@@ -33,4 +33,11 @@ namespace math
         result.y += other.y;
         return result;
     }
+
+    vec2& vec2::operator+=( const vec2& other )
+    {
+        this->x += other.x;
+        this->y += other.y;
+        return *this;
+    }
 }

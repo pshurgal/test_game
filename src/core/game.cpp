@@ -7,6 +7,7 @@
 #include "game_scene_renderer.h"
 #include "core/game_screens/level_game_screen.h"
 #include "logger.h"
+#include "texture_manager.h"
 
 // thirdparty includes
 #define SDL_MAIN_HANDLED
@@ -26,14 +27,17 @@ namespace core
                                                      SDL_WINDOWPOS_UNDEFINED,
                                                      SCREEN_WIDTH,
                                                      SCREEN_HEIGHT,
-                                                     SDL_WINDOW_SHOWN );
+                                                     SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
 
             _renderer = sdl_types_factory::get_renderer( _window, -1, SDL_RENDERER_ACCELERATED );
 
             _game_scene_renderer.set_renderer( _renderer );
 
+            load_textures();
+
             game_screen_manager::instance().push_game_screen(
-                    create_game_screen<game_screens::level_game_screen>( _renderer ) );
+                    create_game_screen<game_screens::level_game_screen>() );
+
         } catch( std::exception& ex )
         {
             SDL_Quit();
@@ -44,7 +48,6 @@ namespace core
 
     game::~game()
     {
-        game_screen_manager::instance().pop_all_game_screens();
         SDL_Quit();
     };
 
@@ -73,5 +76,27 @@ namespace core
     void game::signal_shutdown()
     {
         _shutdown_signalled = true;
+    }
+
+    void game::load_textures()
+    {
+        texture_manager::instance().load_texture( "../share/test_game/images/ground_tile.png", "ground_tile",
+                                                  _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/lava_tile.png", "lava_tile",
+                                                  _renderer );
+
+        texture_manager::instance().load_texture( "../share/test_game/images/player_0.png", "player_0", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/player_1.png", "player_1", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/player_2.png", "player_2", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/player_3.png", "player_3", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/guard_0.png", "guard_0", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/guard_1.png", "guard_1", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/guard_2.png", "guard_2", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/guard_3.png", "guard_3", _renderer );
+
+        texture_manager::instance().load_texture( "../share/test_game/images/bed.png", "bed", _renderer );
+
+        texture_manager::instance().load_texture( "../share/test_game/images/game_over.png", "game_over", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/you_won.png", "you_won", _renderer );
     }
 }

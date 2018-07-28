@@ -18,5 +18,7 @@ namespace math
         bool operator==( const vec2& other );
 
         vec2 operator+( const vec2& other );
+
+        vec2& operator+=( const vec2& other );
     };
 }

@@ -23,13 +23,13 @@ namespace core
             return result;
         }
 
-        bool detect_collision( const gameplay::cell_field_p& cell_field, const math::vec2& coordinates )
+        bool detect_collision( const gameplay::tile_field_p& tile_field, const math::vec2& coordinates )
         {
             return coordinates.x < 0 ||
                    coordinates.y < 0 ||
-                   coordinates.x >= cell_field->width() ||
-                   coordinates.y >= cell_field->height() ||
-                   !cell_field->cell( size_t( coordinates.x ), size_t( coordinates.y ) )->reachable();
+                   coordinates.x >= tile_field->width() ||
+                   coordinates.y >= tile_field->height() ||
+                   !tile_field->tile_reachable( size_t( coordinates.x ), size_t( coordinates.y ) );
         }
 
         uint32_t heuristic( const math::vec2& from, const math::vec2& to )
@@ -39,7 +39,7 @@ namespace core
         }
 
         std::list<gameplay::direction_e> get_path( const math::vec2& from, const math::vec2& to,
-                                        gameplay::cell_field_p cell_field )
+                                                   gameplay::tile_field_p tile_field )
         {
             node_p current = nullptr;
             node_set open_set, closed_set;
@@ -67,8 +67,8 @@ namespace core
 
                 for( const auto& direction : gameplay::direction_array )
                 {
-                    math::vec2 new_coordinates = current->coordinates + gameplay::direction_to_vec2(direction);
-                    if( detect_collision( cell_field, new_coordinates ) ||
+                    math::vec2 new_coordinates = current->coordinates + gameplay::direction_to_vec2( direction );
+                    if( detect_collision( tile_field, new_coordinates ) ||
                         find_node( closed_set, new_coordinates ) )
                     {
                         continue;

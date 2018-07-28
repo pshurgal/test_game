@@ -1,6 +1,7 @@
 #pragma once
 
 // project includes
+#include "gameplay/camera.h"
 
 // STL includes
 #include <memory>
@@ -27,6 +28,6 @@ namespace core
 
         virtual void update() = 0;
 
-    private:
+        gameplay::camera camera;
     };
 }

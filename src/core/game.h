@@ -29,6 +29,9 @@ namespace core
         static const size_t SCREEN_HEIGHT = 768;
 
     private:
+        void load_textures();
+
+    private:
         bool _shutdown_signalled = false;
 
         window_p _window;

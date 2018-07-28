@@ -20,6 +20,5 @@ namespace core
     }
 
     class game_scene : public drawable
-    {
-    };
+    {};
 }

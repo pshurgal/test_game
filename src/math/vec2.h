@@ -14,5 +14,9 @@ namespace math
         int32_t cross( const vec2& other );
 
         int32_t cross( const vec2& zero, const vec2& other );
+
+        bool operator==( const vec2& other );
+
+        vec2 operator+( const vec2& other );
     };
 }

@@ -29,7 +29,7 @@ namespace core
             _y += y;
         }
 
-        SDL_Point camera::screen_coords_to_world_coords( int32_t x, int32_t y )
+        math::vec2 camera::screen_coords_to_world_coords( int32_t x, int32_t y )
         {
             return { x - camera::x(), y - camera::y() };
         }

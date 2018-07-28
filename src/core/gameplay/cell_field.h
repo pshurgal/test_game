@@ -16,9 +16,17 @@ namespace core
         public:
             cell_field( tile_field_p tile_field );
 
-            SDL_Point click_point( int32_t x, int32_t y );
+            math::vec2 click_point( int32_t x, int32_t y );
+
+            cell_p cell( size_t x, size_t y );
+
+            size_t width() const;
+
+            size_t height() const;
 
         private:
+            size_t _width;
+            size_t _height;
             std::vector<std::vector<cell_p>> _cells;
         };
 

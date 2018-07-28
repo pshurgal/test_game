@@ -1,27 +1,110 @@
 #include "a_start.h"
+
+// project includes
+#include "core/gameplay/direction.h"
+
+// STL includes
+#include <cmath>
+#include <map>
+
 namespace core
 {
-    namespace gameplay
+    namespace a_star
     {
 
-        std::list<math::vec2> a_start::get_path( const math::vec2& from, const math::vec2& to, cell_field_p cell_field )
+        const static std::map<gameplay::direction_e, math::vec2> directions = { { gameplay::direction_e::LEFT_DOWN,  { 0,  1 } },
+                                                                                { gameplay::direction_e::LEFT_UP,    { -1, 0 } },
+                                                                                { gameplay::direction_e::RIGHT_UP,   { 0,  -1 } },
+                                                                                { gameplay::direction_e::RIGHT_DOWN, { 1,  0 } } };
+
+        node_p find_node( const node_set& set, const math::vec2& coordinates )
         {
+            node_p result;
+            for( auto& node : set )
+            {
+                if( node->coordinates == coordinates )
+                    result = node;
+            }
 
-
-            return std::list<math::vec2>();
+            return result;
         }
 
-//        std::map<math::vec2, math::vec2> a_start::a_star( const math::vec2& from, const math::vec2& to,
-//                                                          cell_field_p cell_field )
-//        {
-//
-//            return std::map<math::vec2, math::vec2>();
-//        }
-//
-//        std::list<math::vec2> a_start::restore_path( const std::map<math::vec2, math::vec2>& came_from )
-//        {
-//
-//            return std::list<math::vec2>();
-//        }
+        bool detect_collision( const gameplay::cell_field_p& cell_field, const math::vec2& coordinates )
+        {
+            return coordinates.x < 0 ||
+                   coordinates.y < 0 ||
+                   coordinates.x >= cell_field->width() ||
+                   coordinates.y >= cell_field->height() ||
+                   !cell_field->cell( size_t( coordinates.x ), size_t( coordinates.y ) )->reachable();
+        }
+
+        uint32_t heuristic( const math::vec2& from, const math::vec2& to )
+        {
+            auto delta = math::vec2{ std::abs( to.x - from.x ), std::abs( to.y - from.y ) };
+            return uint32_t( std::sqrt( std::pow( delta.x, 2 ) + std::pow( delta.y, 2 ) ) );
+        }
+
+        std::list<math::vec2> get_path( const math::vec2& from, const math::vec2& to,
+                                        gameplay::cell_field_p cell_field )
+        {
+            node_p current = nullptr;
+            node_set open_set, closed_set;
+
+            open_set.insert( create_node( from ) );
+
+            while( !open_set.empty() )
+            {
+                current = *open_set.begin();
+                for( const auto& node : open_set )
+                {
+                    if( node->get_score() <= current->get_score() )
+                    {
+                        current = node;
+                    }
+                }
+
+                if( current->coordinates == to )
+                {
+                    break;
+                }
+
+                closed_set.insert( current );
+                open_set.erase( std::find( open_set.begin(), open_set.end(), current ) );
+
+                for( const auto& direction : gameplay::direction_e() )
+                {
+                    math::vec2 new_coordinates = current->coordinates + directions.at( direction );
+                    if( detect_collision( cell_field, new_coordinates ) ||
+                        find_node( closed_set, new_coordinates ) )
+                    {
+                        continue;
+                    }
+
+                    uint32_t total_cost = current->G;
+
+                    node_p successor = find_node( open_set, new_coordinates );
+                    if( successor == nullptr )
+                    {
+                        successor = create_node( new_coordinates, current );
+                        successor->G = total_cost;
+                        successor->H = heuristic( successor->coordinates, to );
+                        open_set.insert( successor );
+                    } else if( total_cost < successor->G )
+                    {
+                        successor->parent = current;
+                        successor->G = total_cost;
+                    }
+                }
+            }
+
+            std::list<math::vec2> path;
+            while( current != nullptr )
+            {
+                path.push_back( current->coordinates );
+                current = current->parent;
+            }
+
+            return path;
+        }
     }
 }

@@ -1,25 +1,19 @@
 #pragma once
 
+// project includes
+#include "node.h"
 #include "math/vec2.h"
 #include "core/gameplay/cell_field.h"
+
+// STL includes
 #include <list>
-#include <unordered_map>
 
 namespace core
 {
-    namespace gameplay
+    namespace a_star
     {
-        class a_start
-        {
-        public:
-            static std::list<math::vec2> get_path( const math::vec2& from, const math::vec2& to,
-                                                   cell_field_p cell_field );
-
-        private:
-//            static std::unordered_map<   a_star( const math::vec2& from, const math::vec2& to,
-//                                                            cell_field_p cell_field );
-//            static std::list<math::vec2> restore_path( const std::map<math::vec2, math::vec2>& came_from);
-        };
+        std::list<math::vec2> get_path( const math::vec2& from, const math::vec2& to,
+                                               gameplay::cell_field_p cell_field );
     }
 }
 

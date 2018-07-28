@@ -5,6 +5,7 @@
 #include "core/game_scenes/level_game_scene.h"
 #include "core/game_states/level_game_state.h"
 #include "core/logger.h"
+#include "core/a_star/a_start.h"
 
 namespace core
 {
@@ -41,22 +42,6 @@ namespace core
 
             } );
 
-            add_event_handler( SDL_KEYUP, []( SDL_Event& e, game_state_p state )
-            {
-                auto state_converted = ((game_states::level_game_state*)state.get());
-
-                if( e.key.keysym.sym == SDLK_RIGHT )
-                {
-                    state_converted->player->change_direction( state_converted->player->direction() + 1 );
-                }
-
-                if( e.key.keysym.sym == SDLK_LEFT )
-                {
-                    state_converted->player->change_direction( state_converted->player->direction() - 1 );
-                }
-
-            } );
-
             add_event_handler( SDL_MOUSEBUTTONUP, []( SDL_Event& e, game_state_p state )
             {
                 if( e.button.button == SDL_BUTTON_LEFT && e.button.clicks == 1 )
@@ -66,9 +51,9 @@ namespace core
                     auto point = state_converted->camera.screen_coords_to_world_coords( e.button.x, e.button.y );
                     auto tile = state_converted->cell_field->click_point( point.x, point.y );
 
-                    LOG( DEBUG ) << "screen: (" << e.button.x << ", " << e.button.y << ") world: (" << point.x << ", "
-                                 << point.y << ")";
-                    LOG( DEBUG ) << "tail: (" << tile.x << ", " << tile.y << ")";
+                    state_converted->player_path = a_star::get_path( state_converted->player->position(),
+                                                                     tile,
+                                                                     state_converted->cell_field );
                 }
             } );
         }

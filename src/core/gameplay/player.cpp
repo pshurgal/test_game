@@ -29,16 +29,16 @@ namespace core
 
             switch( _direction )
             {
-                case 0:
+                case direction_e::LEFT_DOWN:
                     texture = _texture_0;
                     break;
-                case 1:
+                case direction_e::LEFT_UP:
                     texture = _texture_1;
                     break;
-                case 2:
+                case direction_e::RIGHT_UP:
                     texture = _texture_2;
                     break;
-                case 3:
+                case direction_e::RIGHT_DOWN:
                     texture = _texture_3;
                     break;
             }
@@ -52,14 +52,19 @@ namespace core
                                               std::move( renderer ) );
         }
 
-        int8_t player::direction() const
+        direction_e player::direction() const
         {
             return _direction;
         }
 
-        void player::change_direction( int8_t direction )
+        math::vec2 player::position()
         {
-            _direction = int8_t( (direction + 4) % 4 );
+            return math::vec2( _field_x, _field_y );
+        }
+
+        void player::move( direction_e )
+        {
+
         }
 
         player_p create_player( int32_t x, int32_t y, const std::string& texture_0, const std::string& texture_1,

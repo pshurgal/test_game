@@ -25,6 +25,8 @@ namespace core
 
         virtual ~game_state();
 
+        virtual void update() = 0;
+
     private:
     };
 }

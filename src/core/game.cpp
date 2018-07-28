@@ -61,6 +61,8 @@ namespace core
 
             event_loop::instance().process( screen->event_handlers(), screen->state() );
 
+            screen->state()->update();
+
             _game_scene_renderer.render( screen->scene(), screen->state() );
         }
 

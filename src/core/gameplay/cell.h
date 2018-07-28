@@ -21,8 +21,12 @@ namespace core
             tile_p tile;
             std::shared_ptr<core::gameplay::unit> unit;
 
-        private:
+            bool reachable();
 
+            void set_reachable( bool reachable );
+
+        private:
+            bool _reachable = true;
         };
 
         typedef std::shared_ptr<cell> cell_p;

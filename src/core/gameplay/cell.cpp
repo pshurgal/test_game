@@ -21,6 +21,16 @@ namespace core
                 tile->render( std::move( game_state ), std::move( renderer ) );
         }
 
+        bool cell::reachable()
+        {
+            return tile && _reachable;
+        }
+
+        void cell::set_reachable( bool reachable )
+        {
+            _reachable = reachable;
+        }
+
         cell_p create_cell( tile_p t )
         {
             return std::make_shared<cell>( t );

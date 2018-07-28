@@ -2,6 +2,8 @@
 
 //project includes
 #include "unit.h"
+#include "math/vec2.h"
+#include "direction.h"
 
 namespace core
 {
@@ -19,9 +21,11 @@ namespace core
 
             void render( game_state_p game_state, renderer_p renderer ) override;
 
-            void change_direction( int8_t direction );
+            direction_e direction() const;
 
-            int8_t direction() const;
+            math::vec2 position();
+
+            void move( direction_e );
 
         private:
             int32_t _field_x;
@@ -32,7 +36,7 @@ namespace core
             std::string _texture_2;
             std::string _texture_3;
 
-            int8_t _direction = 0;
+            direction_e _direction = direction_e::LEFT_DOWN;
 
             int32_t _world_x;
             int32_t _world_y;

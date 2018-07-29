@@ -38,6 +38,7 @@ namespace core
             game_screen_manager::instance().push_game_screen(
                     create_game_screen<game_screens::level_game_screen>() );
 
+            LOG( INFO ) << "Game object initialized";
         } catch( std::exception& ex )
         {
             SDL_Quit();

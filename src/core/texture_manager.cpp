@@ -23,9 +23,11 @@ namespace core
             auto surface = sdl_types_factory::get_surface( path );
 
             _textures[id] = sdl_types_factory::get_texture( renderer, surface );
+
+            LOG( INFO ) << "Texture file loaded: " << path;
         } catch( std::exception& e )
         {
-            LOG( ERROR ) << "Could not load file: " << path;
+            LOG( ERROR ) << SDL_GetError();
             throw e;
         }
     }

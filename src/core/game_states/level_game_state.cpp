@@ -86,14 +86,6 @@ namespace core
             auto current_time = std::chrono::high_resolution_clock::now();
 
             if( std::chrono::duration_cast<std::chrono::milliseconds>(
-                    current_time - last_boulder_spikes_update_time ).count() >=
-                1500 )
-            {
-                create_random_boulder_spike();
-                last_boulder_spikes_update_time = std::chrono::high_resolution_clock::now();
-            }
-
-            if( std::chrono::duration_cast<std::chrono::milliseconds>(
                     current_time - last_units_update_time ).count() >=
                 500 )
             {
@@ -147,6 +139,14 @@ namespace core
 
 
                 last_units_update_time = std::chrono::high_resolution_clock::now();
+            }
+
+            if( std::chrono::duration_cast<std::chrono::milliseconds>(
+                    current_time - last_boulder_spikes_update_time ).count() >=
+                1500 )
+            {
+                create_random_boulder_spike();
+                last_boulder_spikes_update_time = std::chrono::high_resolution_clock::now();
             }
         }
 

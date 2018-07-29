@@ -25,7 +25,7 @@ namespace core
                 rendering_order[ state_converted->bed->field_position().y ].push_back(state_converted->bed);
                 rendering_order[ state_converted->player->field_position().y ].push_back(state_converted->player);
                 rendering_order[ state_converted->guard->field_position().y ].push_back(state_converted->guard);
-                
+
                 for( auto& boulder_spike : state_converted->boulder_spikes )
                 {
                     rendering_order[ boulder_spike->field_position().y ].push_back(boulder_spike);

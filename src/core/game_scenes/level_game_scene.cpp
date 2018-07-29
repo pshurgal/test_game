@@ -5,6 +5,10 @@
 #include "core/game_states/level_game_state.h"
 #include "core/gameplay/tile.h"
 
+// STL includes
+#include <vector>
+#include <list>
+
 namespace core
 {
     namespace game_scenes
@@ -14,17 +18,30 @@ namespace core
             auto state_converted = dynamic_cast<game_states::level_game_state*>(game_state.get());
             if( state_converted )
             {
-                if( state_converted->tile_field )
-                    state_converted->tile_field->render( game_state, renderer );
+                state_converted->tile_field->render(game_state,renderer);
 
-                if( state_converted->bed )
-                    state_converted->bed->render( game_state, renderer );
+                std::vector<std::list<gameplay::unit_p>> rendering_order(state_converted->tile_field->height());
 
-                if( state_converted->player )
-                    state_converted->player->render( game_state, renderer );
+                rendering_order[ state_converted->bed->field_position().y ].push_back(state_converted->bed);
+                rendering_order[ state_converted->player->field_position().y ].push_back(state_converted->player);
+                rendering_order[ state_converted->guard->field_position().y ].push_back(state_converted->guard);
+                
+                for( auto& boulder_spike : state_converted->boulder_spikes )
+                {
+                    rendering_order[ boulder_spike->field_position().y ].push_back(boulder_spike);
+                }
 
-                if( state_converted->guard )
-                    state_converted->guard->render( game_state, renderer );
+                for( auto& list: rendering_order )
+                {
+                    list.sort([](gameplay::unit_p a, gameplay::unit_p b){
+                        return a->field_position().x < b->field_position().x;
+                    });
+
+                    for(auto& unit : list )
+                    {
+                        unit->render(game_state,renderer);
+                    }
+                }
             }
         }
     }

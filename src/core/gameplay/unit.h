@@ -28,11 +28,13 @@ namespace core
 
             direction_e direction() const;
 
+            direction_e& direction();
+
             math::vec2 field_position();
 
             math::vec2 world_position();
 
-            void move( direction_e );
+            virtual void move( direction_e );
 
         private:
             math::vec2 _field_position;
@@ -51,6 +53,12 @@ namespace core
 
         unit_p create_unit( int32_t x, int32_t y, const std::string& texture_0, const std::string& texture_1,
                             const std::string& texture_2, const std::string& texture_3 );
+
+        template< class T, typename... Args >
+        unit_p create_unit( Args... args )
+        {
+            return unit_p( new T( args... ) );
+        }
     }
 }
 

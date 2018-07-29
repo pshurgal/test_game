@@ -93,6 +93,10 @@ namespace core
         texture_manager::instance().load_texture( "../share/test_game/images/guard_1.png", "guard_1", _renderer );
         texture_manager::instance().load_texture( "../share/test_game/images/guard_2.png", "guard_2", _renderer );
         texture_manager::instance().load_texture( "../share/test_game/images/guard_3.png", "guard_3", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/boulder_spike_0.png", "boulder_spike_0", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/boulder_spike_1.png", "boulder_spike_1", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/boulder_spike_2.png", "boulder_spike_2", _renderer );
+        texture_manager::instance().load_texture( "../share/test_game/images/boulder_spike_3.png", "boulder_spike_3", _renderer );
 
         texture_manager::instance().load_texture( "../share/test_game/images/bed.png", "bed", _renderer );
 

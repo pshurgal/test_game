@@ -31,9 +31,15 @@ namespace core
 
             gameplay::unit_p bed;
 
+            std::list<gameplay::unit_p> boulder_spikes;
+
             static const core::event_handler mouse_button_up_handler;
 
+            static const core::event_handler key_up_handler;
+
         private:
+            void create_random_boulder_spike();
+
             bool is_game_over();
             bool is_win();
 
@@ -45,7 +51,8 @@ namespace core
             math::vec2 _guard_point_2 = {15, 0};
             math::vec2 _guard_point_current = _guard_point_2;
 
-            std::chrono::high_resolution_clock::time_point last_update_time = std::chrono::high_resolution_clock::now();;
+            std::chrono::high_resolution_clock::time_point last_units_update_time = std::chrono::high_resolution_clock::now();
+            std::chrono::high_resolution_clock::time_point last_boulder_spikes_update_time = std::chrono::high_resolution_clock::now();
         };
     }
 }

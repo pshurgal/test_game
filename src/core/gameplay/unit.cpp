@@ -73,6 +73,11 @@ namespace core
             return _world_position;
         }
 
+        direction_e& unit::direction()
+        {
+            return _direction;
+        }
+
         unit_p create_unit( int32_t x, int32_t y, const std::string& texture_0, const std::string& texture_1,
                             const std::string& texture_2, const std::string& texture_3 )
         {

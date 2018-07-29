@@ -1,9 +1,9 @@
 #pragma once
 
 // project includes
+#include "drawable.h"
 #include "game_scene.h"
 #include "sdl_types.h"
-#include "drawable.h"
 
 // STL includes
 #include <functional>
@@ -13,14 +13,14 @@ namespace core
 {
     class game_scene_renderer
     {
-    public:
+      public:
         game_scene_renderer();
 
-        void set_renderer( renderer_p renderer );
+        void set_renderer(renderer_p renderer);
 
-        void render( game_scene_p scene, game_state_p game_state );
+        void render(game_scene_p scene, game_state_p game_state);
 
-    private:
+      private:
         renderer_p _renderer;
     };
 }

@@ -14,18 +14,23 @@ namespace core
 {
     class texture_manager
     {
-    private:
+      private:
         texture_manager();
 
-    public:
+      public:
         static texture_manager& instance();
 
-        void load_texture( std::string path, std::string id, renderer_p renderer );
+        void load_texture(std::string path, std::string id, renderer_p renderer);
 
-        void draw( std::string id, int x, int y, int width, int height, renderer_p renderer,
-                   SDL_RendererFlip flip = SDL_FLIP_NONE );
+        void draw(std::string id,
+                  int x,
+                  int y,
+                  int width,
+                  int height,
+                  renderer_p renderer,
+                  SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-    private:
+      private:
         std::map<std::string, texture_p> _textures;
     };
 }

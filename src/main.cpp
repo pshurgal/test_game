@@ -6,14 +6,18 @@
 using namespace std;
 using namespace core;
 
-int main()
+int
+    main()
 {
     int result = 0;
 
-    try {
+    try
+    {
         logger::instance().init();
         result = game::instance().exec();
-    } catch (std::exception& e) {
+    }
+    catch(std::exception& e)
+    {
         LOG(FATAL) << e.what();
     }
 

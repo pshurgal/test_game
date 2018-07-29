@@ -20,20 +20,21 @@ namespace core
         return _event_loop;
     }
 
-    void event_loop::process( std::map<uint32_t, event_handler> event_handlers, game_state_p game_state )
+    void event_loop::process(std::map<uint32_t, event_handler> event_handlers, game_state_p game_state)
     {
         SDL_Event e;
-        while( SDL_PollEvent( &e ) )
+        while(SDL_PollEvent(&e))
         {
-            if( e.type == SDL_QUIT )
+            if(e.type == SDL_QUIT)
             {
                 game::instance().signal_shutdown();
-            } else
+            }
+            else
             {
-                auto handler = event_handlers.find( e.type );
-                if( handler != event_handlers.end() )
+                auto handler = event_handlers.find(e.type);
+                if(handler != event_handlers.end())
                 {
-                    handler->second( e, game_state );
+                    handler->second(e, game_state);
                 }
             }
         }

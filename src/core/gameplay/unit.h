@@ -2,9 +2,8 @@
 
 // project includes
 #include "core/drawable.h"
-#include "math/vec2.h"
 #include "direction.h"
-
+#include "math/vec2.h"
 
 // STL includes
 #include <cstdint>
@@ -16,15 +15,15 @@ namespace core
     {
         class unit : public drawable
         {
-        public:
-            unit( int32_t x,
-                  int32_t y,
-                  const std::string& texture_0,
-                  const std::string& texture_1,
-                  const std::string& texture_2,
-                  const std::string& texture_3 );
+          public:
+            unit(int32_t x,
+                 int32_t y,
+                 const std::string& texture_0,
+                 const std::string& texture_1,
+                 const std::string& texture_2,
+                 const std::string& texture_3);
 
-            void render( game_state_p game_state, renderer_p renderer ) override;
+            void render(game_state_p game_state, renderer_p renderer) override;
 
             direction_e direction() const;
 
@@ -34,9 +33,9 @@ namespace core
 
             math::vec2 world_position();
 
-            virtual void move( direction_e );
+            virtual void move(direction_e);
 
-        private:
+          private:
             math::vec2 _field_position;
 
             std::string _texture_0;
@@ -51,15 +50,17 @@ namespace core
 
         typedef std::shared_ptr<unit> unit_p;
 
-        unit_p create_unit( int32_t x, int32_t y, const std::string& texture_0, const std::string& texture_1,
-                            const std::string& texture_2, const std::string& texture_3 );
+        unit_p create_unit(int32_t x,
+                           int32_t y,
+                           const std::string& texture_0,
+                           const std::string& texture_1,
+                           const std::string& texture_2,
+                           const std::string& texture_3);
 
-        template< class T, typename... Args >
-        unit_p create_unit( Args... args )
+        template<class T, typename... Args>
+        unit_p create_unit(Args... args)
         {
-            return unit_p( new T( args... ) );
+            return unit_p(new T(args...));
         }
     }
 }
-
-

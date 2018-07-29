@@ -16,24 +16,30 @@ namespace core
         return _texture_manager;
     }
 
-    void texture_manager::load_texture( std::string path, std::string id, renderer_p renderer )
+    void texture_manager::load_texture(std::string path, std::string id, renderer_p renderer)
     {
         try
         {
-            auto surface = sdl_types_factory::get_surface( path );
+            auto surface = sdl_types_factory::get_surface(path);
 
-            _textures[id] = sdl_types_factory::get_texture( renderer, surface );
+            _textures[id] = sdl_types_factory::get_texture(renderer, surface);
 
-            LOG( INFO ) << "Texture file loaded: " << path;
-        } catch( std::exception& e )
+            LOG(INFO) << "Texture file loaded: " << path;
+        }
+        catch(std::exception& e)
         {
-            LOG( ERROR ) << SDL_GetError();
+            LOG(ERROR) << SDL_GetError();
             throw e;
         }
     }
 
-    void texture_manager::draw( std::string id, int x, int y, int width, int height, renderer_p renderer,
-                                SDL_RendererFlip flip )
+    void texture_manager::draw(std::string id,
+                               int x,
+                               int y,
+                               int width,
+                               int height,
+                               renderer_p renderer,
+                               SDL_RendererFlip flip)
     {
         SDL_Rect src_rect;
         SDL_Rect dest_rect;
@@ -48,6 +54,6 @@ namespace core
         dest_rect.w = width;
         dest_rect.h = height;
 
-        SDL_RenderCopyEx( renderer.get(), _textures[id].get(), &src_rect, &dest_rect, 0, nullptr, flip );
+        SDL_RenderCopyEx(renderer.get(), _textures[id].get(), &src_rect, &dest_rect, 0, nullptr, flip);
     }
 }

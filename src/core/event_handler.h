@@ -11,5 +11,5 @@
 
 namespace core
 {
-    typedef std::function<void (SDL_Event& e, game_state_p state )> event_handler;
+    typedef std::function<void(SDL_Event& e, game_state_p state)> event_handler;
 }

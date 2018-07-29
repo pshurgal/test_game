@@ -1,37 +1,37 @@
 #pragma once
 
 // project includes
-#include "sdl_types.h"
 #include "game_scene_renderer.h"
+#include "sdl_types.h"
 
 // STL includes
-#include <memory>
 #include <cstdint>
+#include <memory>
 
 namespace core
 {
     class game
     {
-    private:
+      private:
         game();
 
         ~game();
 
-    public:
+      public:
         static game& instance();
 
         int exec();
 
         void signal_shutdown();
 
-    public:
+      public:
         static const size_t SCREEN_WIDTH = 1024;
         static const size_t SCREEN_HEIGHT = 768;
 
-    private:
+      private:
         void load_textures();
 
-    private:
+      private:
         bool _shutdown_signalled = false;
 
         window_p _window;

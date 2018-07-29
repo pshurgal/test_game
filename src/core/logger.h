@@ -11,18 +11,18 @@
 
 namespace core
 {
-    const static LEVELS ERROR{ 700, { "ERROR" } };
+    const static LEVELS ERROR{700, {"ERROR"}};
 
     class logger
     {
         logger();
 
-    public:
+      public:
         static logger& instance();
 
         void init();
 
-    private:
-        std::unique_ptr <g3::LogWorker> _worker;
+      private:
+        std::unique_ptr<g3::LogWorker> _worker;
     };
 }

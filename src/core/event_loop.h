@@ -1,28 +1,28 @@
 #pragma once
 
 // project includes
+#include "event_handler.h"
 #include "game.h"
 #include "game_state.h"
-#include "event_handler.h"
 
 // STL includes
-#include <memory>
 #include <map>
+#include <memory>
 
 namespace core
 {
     class event_loop
     {
-    private:
+      private:
         event_loop();
 
         ~event_loop();
 
-    public:
+      public:
         static event_loop& instance();
 
-        void process( std::map<uint32_t, event_handler> event_handlers, game_state_p game_state );
+        void process(std::map<uint32_t, event_handler> event_handlers, game_state_p game_state);
 
-    private:
+      private:
     };
 }

@@ -5,8 +5,8 @@
 
 // project includes
 #include "game_screen_manager.h"
-#include "texture_manager.h"
 #include "sdl_types_factory.h"
+#include "texture_manager.h"
 
 namespace core
 {
@@ -14,19 +14,19 @@ namespace core
     {
     }
 
-    void game_scene_renderer::render( game_scene_p scene, game_state_p game_state )
+    void game_scene_renderer::render(game_scene_p scene, game_state_p game_state)
     {
-        if( _renderer )
+        if(_renderer)
         {
-            SDL_RenderClear( _renderer.get() );
+            SDL_RenderClear(_renderer.get());
 
-            scene->render( std::move( game_state ), _renderer );
+            scene->render(std::move(game_state), _renderer);
 
-            SDL_RenderPresent( _renderer.get() );
+            SDL_RenderPresent(_renderer.get());
         }
     }
 
-    void game_scene_renderer::set_renderer( renderer_p renderer )
+    void game_scene_renderer::set_renderer(renderer_p renderer)
     {
         _renderer = renderer;
     }

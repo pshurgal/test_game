@@ -11,17 +11,17 @@ namespace core
 {
     class game_screen_manager
     {
-    private:
+      private:
         game_screen_manager() = default;
 
-    public:
+      public:
         static game_screen_manager& instance();
 
-        void push_game_screen( game_screen_p screen );
+        void push_game_screen(game_screen_p screen);
 
         game_screen_p current_screen();
 
-    private:
+      private:
         game_screen_p _screens;
     };
 }

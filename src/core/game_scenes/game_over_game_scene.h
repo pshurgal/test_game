@@ -10,12 +10,12 @@ namespace core
     {
         class game_over_game_scene : public game_scene
         {
-        public:
-            explicit game_over_game_scene( bool win = false);
+          public:
+            explicit game_over_game_scene(bool win = false);
 
-            void render( game_state_p game_state, renderer_p renderer ) override;
+            void render(game_state_p game_state, renderer_p renderer) override;
 
-        private:
+          private:
             bool _win = false;
         };
     }

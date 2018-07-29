@@ -1,8 +1,8 @@
 #pragma once
 
 // project includes
-#include "math/vec2.h"
 #include "core/gameplay/direction.h"
+#include "math/vec2.h"
 
 // STL includes
 #include <memory>
@@ -25,11 +25,11 @@ namespace core
             uint32_t G;
             uint32_t H;
 
-            explicit node( const math::vec2& coordinates, node_p parent = node_p() );
+            explicit node(const math::vec2& coordinates, node_p parent = node_p());
 
             uint32_t get_score();
         };
 
-        node_p create_node( const math::vec2& coordinates, node_p parent = node_p() );
+        node_p create_node(const math::vec2& coordinates, node_p parent = node_p());
     }
 }

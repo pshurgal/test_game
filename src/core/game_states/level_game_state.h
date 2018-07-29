@@ -40,7 +40,24 @@ namespace core
           private:
             void create_random_boulder_spike();
 
+            void push_game_screen_on_game_over();
+
+            void push_game_screen_on_win();
+
+            void try_move_player();
+
+            void move_boulder_spikes();
+
+            void remove_boulder_spikes_that_crossed_the_game_field();
+
+            void rebuild_path_for_guard();
+
+            void try_move_guard();
+
+            void try_update_destination_point_for_guard();
+
             bool is_game_over();
+
             bool is_win();
 
           private:

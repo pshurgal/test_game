@@ -20,7 +20,8 @@ namespace core
                 if(e.button.button == SDL_BUTTON_LEFT && e.button.clicks == 1)
                 {
                     auto point = state_converted->camera.screen_coords_to_world_coords(e.button.x, e.button.y);
-                    auto tile = state_converted->tile_field->click_point(point.x, point.y);
+                    auto tile = state_converted->tile_field->click_point(static_cast<size_t>(point.x),
+                                                                         static_cast<size_t>(point.y));
 
                     if(tile.x != INT32_MIN)
                     {
@@ -31,11 +32,13 @@ namespace core
                 else if(e.button.button == SDL_BUTTON_RIGHT && e.button.clicks == 1)
                 {
                     auto point = state_converted->camera.screen_coords_to_world_coords(e.button.x, e.button.y);
-                    auto tile = state_converted->tile_field->click_point(point.x, point.y);
+                    auto tile = state_converted->tile_field->click_point(static_cast<size_t>(point.x),
+                                                                         static_cast<size_t>(point.y));
 
                     if(tile.x != INT32_MIN)
                     {
-                        state_converted->tile_field->tile(tile.x, tile.y)->switch_state();
+                        state_converted->tile_field->tile(static_cast<size_t>(tile.x), static_cast<size_t>(tile.y))
+                            ->switch_state();
                     }
                 }
             }
@@ -68,7 +71,7 @@ namespace core
 
         level_game_state::level_game_state()
         {
-            std::srand(unsigned(std::time(0)));
+            std::srand(unsigned(std::time(nullptr)));
 
             tile_field = gameplay::create_tile_field(30, 30, "ground_tile", "lava_tile");
             player = gameplay::create_unit(0, 0, "player_0", "player_1", "player_2", "player_3");
@@ -81,6 +84,53 @@ namespace core
             _guard_point_current = _guard_point_2;
         }
 
+        void level_game_state::push_game_screen_on_game_over()
+        {
+            if(is_game_over())
+            {
+                core::game_screen_manager::instance().push_game_screen(
+                    create_game_screen<game_screens::game_over_game_screen>());
+            }
+        }
+
+        void level_game_state::push_game_screen_on_win()
+        {
+            if(is_win())
+            {
+                core::game_screen_manager::instance().push_game_screen(
+                    create_game_screen<game_screens::game_over_game_screen>(true));
+            }
+        }
+
+        void level_game_state::try_move_player()
+        {
+            if(!_player_path.empty())
+            {
+                player->move(_player_path.back());
+                _player_path.pop_back();
+            }
+        }
+
+        void level_game_state::move_boulder_spikes()
+        {
+            for(auto& boulder_spike : boulder_spikes)
+            {
+                auto boulder_spike_converted = dynamic_cast<gameplay::boulder_spike*>(boulder_spike.get());
+                boulder_spike_converted->move();
+            }
+        }
+
+        void level_game_state::remove_boulder_spikes_that_crossed_the_game_field()
+        {
+            boulder_spikes.remove_if([&](gameplay::unit_p boulder_spike) {
+                auto field_position = boulder_spike->field_position();
+
+                return field_position.x < 0 || field_position.y < 0 ||
+                       static_cast<size_t>(field_position.x) >= tile_field->width() ||
+                       static_cast<size_t>(field_position.y) >= tile_field->height();
+            });
+        }
+
         void level_game_state::update()
         {
             auto current_time = std::chrono::high_resolution_clock::now();
@@ -88,36 +138,15 @@ namespace core
             if(std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_units_update_time).count() >=
                500)
             {
-                if(is_game_over())
-                {
-                    core::game_screen_manager::instance().push_game_screen(
-                        create_game_screen<game_screens::game_over_game_screen>());
-                }
+                push_game_screen_on_game_over();
 
-                if(is_win())
-                {
-                    core::game_screen_manager::instance().push_game_screen(
-                        create_game_screen<game_screens::game_over_game_screen>(true));
-                }
+                push_game_screen_on_win();
 
-                if(!_player_path.empty())
-                {
-                    player->move(_player_path.back());
-                    _player_path.pop_back();
-                }
+                try_move_player();
 
-                for(auto& boulder_spike : boulder_spikes)
-                {
-                    auto boulder_spike_converted = dynamic_cast<gameplay::boulder_spike*>(boulder_spike.get());
-                    boulder_spike_converted->move();
-                }
+                move_boulder_spikes();
 
-                boulder_spikes.remove_if([&](gameplay::unit_p boulder_spike) {
-                    auto field_position = boulder_spike->field_position();
-
-                    return field_position.x < 0 || field_position.y < 0 || field_position.x >= tile_field->width() ||
-                           field_position.y >= tile_field->height();
-                });
+                remove_boulder_spikes_that_crossed_the_game_field();
 
                 _guard_path = a_star::get_path(guard->field_position(), _guard_point_current, tile_field);
 
@@ -161,7 +190,7 @@ namespace core
 
         void level_game_state::create_random_boulder_spike()
         {
-            gameplay::direction_e direction;
+            gameplay::direction_e direction = gameplay::direction_e::LEFT_DOWN;
             math::vec2 start_position(0, 0);
 
             switch(std::rand() % 4)

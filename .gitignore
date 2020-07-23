@@ -21,6 +21,7 @@ core
 build/
 cmake-build/
 cmake-build-*/
+out/
 !core/
 tags
 .DS_Store
@@ -65,6 +66,11 @@ CMakeLists.txt.user
 *.opensdf
 *.vcxproj
 *vcxproj.*
+.vs/
+CMakeSettings.json
+
+# VS Code files
+.vscode/
 
 # MinGW generated files
 *.Debug

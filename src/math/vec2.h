@@ -1,24 +1,77 @@
 #pragma once
 
-// STL includes
 #include <cstdint>
 
-namespace math
+namespace tg
 {
-    struct vec2
+    template<typename ValueType>
+    struct Vec2
     {
-        int32_t x, y;
+        ValueType x, y;
 
-        vec2(int32_t x, int32_t y);
+        Vec2()
+            : Vec2(0, 0)
+        {}
 
-        int32_t cross(const vec2& other);
+        Vec2(ValueType p_x, ValueType p_y)
+            : x(p_x)
+            , y(p_y)
+        {}
 
-        int32_t cross(const vec2& zero, const vec2& other);
+        ValueType cross(const Vec2& p_other) { return (x * p_other.y) - (y * p_other.x); }
 
-        bool operator==(const vec2& other);
+        ValueType cross(const Vec2& p_zero, const Vec2& p_other)
+        {
+            Vec2 a = { x - p_zero.x, y - p_zero.y };
+            Vec2 b = { p_other.x - p_zero.x, p_other.y - p_zero.y };
+            return a.cross(b);
+        }
 
-        vec2 operator+(const vec2& other);
+        bool operator==(const Vec2& p_other) const { return x == p_other.x && y == p_other.y; }
+        bool operator!=(const Vec2& p_other) const { return x != p_other.x || y != p_other.y; }
 
-        vec2& operator+=(const vec2& other);
+        Vec2 operator+(const Vec2& p_other) const
+        {
+            Vec2 result = *this;
+            result.x += p_other.x;
+            result.y += p_other.y;
+            return result;
+        }
+
+        Vec2 operator-(const Vec2& p_other) const
+        {
+            Vec2 result = *this;
+            result.x -= p_other.x;
+            result.y -= p_other.y;
+            return result;
+        }
+
+        template<typename ScalarType>
+        Vec2 operator/(ScalarType p_scalar) const
+        {
+            Vec2 result = *this;
+            result.x /= p_scalar;
+            result.y /= p_scalar;
+            return result;
+        }
+
+        template<typename ScalarType>
+        Vec2 operator*(ScalarType p_scalar) const
+        {
+            Vec2 result = *this;
+            result.x *= p_scalar;
+            result.y *= p_scalar;
+            return result;
+        }
+
+        Vec2& operator+=(const Vec2& p_other)
+        {
+            this->x += p_other.x;
+            this->y += p_other.y;
+            return *this;
+        }
     };
+
+    using Vec2i = Vec2<std::int32_t>;
+    using Vec2f = Vec2<float>;
 }

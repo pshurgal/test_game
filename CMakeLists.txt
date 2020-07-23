@@ -1,73 +1,158 @@
 cmake_minimum_required(VERSION 3.8)
 project(test_game)
 
-set(CMAKE_CXX_STANDARD 17)
+add_subdirectory(thirdparty)
 
-set(GLOBAL_OUTPUT_PATH ${PROJECT_BINARY_DIR})
+add_executable(${PROJECT_NAME} "")
 
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
-endif (NOT CMAKE_BUILD_TYPE)
+if(WIN32)
+    set_target_properties(${PROJECT_NAME}
+        PROPERTIES
+            WIN32_EXECUTABLE TRUE
+    )
+endif()
 
-include(CMakeListsExt.txt)
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/src
+)
 
-include_directories(${THIRDPARTY_INCLUDE_PATHS} ${CMAKE_SOURCE_DIR}/src)
-link_directories(${THIRDPARTY_LIBRARIES_PATHS})
+target_compile_features(${PROJECT_NAME}
+    PRIVATE
+        cxx_std_17
+)
 
-set(SOURCES src/main.cpp src/core/game.cpp src/core/game.h src/core/event_loop.cpp src/core/event_loop.h src/core/event_handler.h src/core/game_scene_renderer.cpp src/core/game_scene_renderer.h src/core/game_scene.cpp src/core/game_scene.h src/core/texture_manager.cpp src/core/texture_manager.h src/core/sdl_types.h src/core/sdl_types_factory.cpp src/core/sdl_types_factory.h src/core/logger.cpp src/core/logger.h src/core/game_state.cpp src/core/game_state.h src/core/game_screen_manager.cpp src/core/game_screen_manager.h src/core/game_screen.cpp src/core/game_screen.h src/core/game_states/level_game_state.cpp src/core/game_states/level_game_state.h src/core/game_scenes/level_game_scene.cpp src/core/game_scenes/level_game_scene.h src/core/game_screens/level_game_screen.cpp src/core/game_screens/level_game_screen.h src/core/gameplay/camera.cpp src/core/gameplay/camera.h src/core/gameplay/tile.cpp src/core/gameplay/tile.h src/core/gameplay/unit.cpp src/core/gameplay/unit.h src/core/drawable.h src/math/vec2.cpp src/math/vec2.h src/core/gameplay/tile_field.cpp src/core/gameplay/tile_field.h src/core/a_star/a_start.cpp src/core/a_star/a_start.h src/core/a_star/node.cpp src/core/a_star/node.h src/core/gameplay/direction.h src/core/gameplay/direction.cpp src/core/game_screens/game_over_game_screen.cpp src/core/game_screens/game_over_game_screen.h src/core/game_scenes/game_over_game_scene.cpp src/core/game_scenes/game_over_game_scene.h src/core/game_states/game_over_game_state.cpp src/core/game_states/game_over_game_state.h src/core/gameplay/boulder_spike.cpp src/core/gameplay/boulder_spike.h)
+set(SRC_ROOT "${CMAKE_CURRENT_LIST_DIR}/src")
+
+set(SOURCES
+        ${SRC_ROOT}/algorithm/a_start.cpp
+        ${SRC_ROOT}/algorithm/a_start.h
+
+        ${SRC_ROOT}/container/sparse_map.h
+
+        ${SRC_ROOT}/ecs/components_view.h
+        ${SRC_ROOT}/ecs/entity.cpp
+        ${SRC_ROOT}/ecs/entity.h
+        ${SRC_ROOT}/ecs/pool.h
+        ${SRC_ROOT}/ecs/registry.h
+
+        ${SRC_ROOT}/events/event.h
+        ${SRC_ROOT}/events/event_handler.h
+        ${SRC_ROOT}/events/event_pump.cpp
+        ${SRC_ROOT}/events/event_pump.h
+
+        ${SRC_ROOT}/game/field/tile.cpp
+        ${SRC_ROOT}/game/field/tile.h
+        ${SRC_ROOT}/game/field/tile_field.cpp
+        ${SRC_ROOT}/game/field/tile_field.h
+        ${SRC_ROOT}/game/states/game_over.cpp
+        ${SRC_ROOT}/game/states/game_over.h
+        ${SRC_ROOT}/game/states/level.cpp
+        ${SRC_ROOT}/game/states/level.h
+        ${SRC_ROOT}/game/systems/damage_system.cpp
+        ${SRC_ROOT}/game/systems/damage_system.h
+        ${SRC_ROOT}/game/systems/despawn_system.cpp
+        ${SRC_ROOT}/game/systems/despawn_system.h
+        ${SRC_ROOT}/game/systems/movement_system.cpp
+        ${SRC_ROOT}/game/systems/movement_system.h
+        ${SRC_ROOT}/game/systems/path_system.cpp
+        ${SRC_ROOT}/game/systems/path_system.h
+        ${SRC_ROOT}/game/systems/patrol_system.cpp
+        ${SRC_ROOT}/game/systems/patrol_system.h
+        ${SRC_ROOT}/game/systems/visual_system.cpp
+        ${SRC_ROOT}/game/systems/visual_system.h
+        ${SRC_ROOT}/game/game.cpp
+        ${SRC_ROOT}/game/game.h
+        ${SRC_ROOT}/game/game_state.cpp
+        ${SRC_ROOT}/game/game_state.h
+        ${SRC_ROOT}/game/game_state_machine.cpp
+        ${SRC_ROOT}/game/game_state_machine.h
+
+        ${SRC_ROOT}/graphics/bitmap.cpp
+        ${SRC_ROOT}/graphics/bitmap.h
+        ${SRC_ROOT}/graphics/bitmap_loader.cpp
+        ${SRC_ROOT}/graphics/bitmap_loader.h
+
+        ${SRC_ROOT}/input/keyboard_key.h
+        ${SRC_ROOT}/input/mouse_button.h
+
+        ${SRC_ROOT}/launcher/main.cpp
+        ${SRC_ROOT}/launcher/main.h
+        $<$<BOOL:${UNIX}>:${SRC_ROOT}/launcher/main_linux.cpp>
+        $<$<BOOL:${WIN32}>:${SRC_ROOT}/launcher/main_win32.cpp>
+
+        ${SRC_ROOT}/math/rect.h
+        ${SRC_ROOT}/math/vec2.h
+
+        ${SRC_ROOT}/rendering/camera.cpp
+        ${SRC_ROOT}/rendering/camera.h
+        ${SRC_ROOT}/rendering/canvas.cpp
+        ${SRC_ROOT}/rendering/canvas.h
+        ${SRC_ROOT}/rendering/rendering_backend.cpp
+        ${SRC_ROOT}/rendering/rendering_backend.h
+        ${SRC_ROOT}/rendering/texture.cpp
+        ${SRC_ROOT}/rendering/texture.h
+
+        ${SRC_ROOT}/resources/texture_manager.cpp
+        ${SRC_ROOT}/resources/texture_manager.h
+
+        ${SRC_ROOT}/utils/generic_handle.h
+        ${SRC_ROOT}/utils/raii_guard.h
+)
 
 set(IMAGES
-        resources/images/game_over.png
-        resources/images/you_won.png
-        resources/images/ground_tile.png
-        resources/images/lava_tile.png
-        resources/images/player_0.png
-        resources/images/player_1.png
-        resources/images/player_2.png
-        resources/images/player_3.png
-        resources/images/guard_0.png
-        resources/images/guard_1.png
-        resources/images/guard_2.png
-        resources/images/guard_3.png
-        resources/images/boulder_spike_0.png
-        resources/images/boulder_spike_1.png
-        resources/images/boulder_spike_2.png
-        resources/images/boulder_spike_3.png
-        resources/images/bed.png)
-
-set(SCRIPTS
-        resources/test_game.sh)
-
-add_executable(${PROJECT_NAME} ${SOURCES})
-add_dependencies(${PROJECT_NAME} ${THIRDPARTY_DEPENDENCIES})
-
-set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_START_STATIC 1)
-set_target_properties(${PROJECT_NAME} PROPERTIES LINK_SEARCH_END_STATIC 1)
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-
-target_link_libraries(${PROJECT_NAME} ${THIRDPARTY_LIBRARIES})
-
-if (NOT CMAKE_INSTALL_PREFIX)
-    set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
-endif ()
-
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-install(
-        CODE "file( GLOB SO_LIBRARIES \"${GLOBAL_OUTPUT_PATH}/3rdparty_build/lib/*.so\" )"
-        CODE "file( INSTALL \${SO_LIBRARIES} DESTINATION \"${CMAKE_INSTALL_PREFIX}/lib\" )"
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/game_over.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/you_won.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/ground_tile.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/lava_tile.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/player_0.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/player_1.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/player_2.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/player_3.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/guard_0.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/guard_1.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/guard_2.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/guard_3.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/spiked_ball_0.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/spiked_ball_1.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/spiked_ball_2.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/spiked_ball_3.png
+        ${CMAKE_CURRENT_LIST_DIR}/resources/images/bed.png
 )
-install(
-        CODE "file( GLOB SO_LIBRARIES \"${GLOBAL_OUTPUT_PATH}/3rdparty_build/lib/*.so.*\" )"
-        CODE "file( INSTALL \${SO_LIBRARIES} DESTINATION \"${CMAKE_INSTALL_PREFIX}/lib\" )"
+
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        ${SOURCES}
+        ${IMAGES}
+ )
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        SDL2-static
+        stb
 )
-install(FILES ${SCRIPTS} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(FILES ${IMAGES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/test_game/images PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ )
+
+set_target_properties(${PROJECT_NAME} 
+    PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+add_custom_target(copy_images
+    COMMENT "Copyint images into build directory"
+    VERBATIM
+    COMMAND_EXPAND_LISTS
+    COMMAND ${CMAKE_COMMAND} -E
+        make_directory "${CMAKE_BINARY_DIR}/bin/images"
+    COMMAND ${CMAKE_COMMAND} -E
+        copy_if_different ${IMAGES} "${CMAKE_BINARY_DIR}/bin/images"
+)
+
+add_dependencies(${PROJECT_NAME} copy_images)
 
 add_custom_target(create_zip
-        COMMAND
-        ${CMAKE_COMMAND} -E tar "cfv" "${CMAKE_INSTALL_PREFIX}/test_game.zip" --format=zip
-        "${CMAKE_INSTALL_PREFIX}/bin"
-        "${CMAKE_INSTALL_PREFIX}/lib"
-        "${CMAKE_INSTALL_PREFIX}/share"
-        WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+        COMMENT "Creating ZIP erchive of build artifacts"
+        VERBATIM
+        COMMAND ${CMAKE_COMMAND} -E tar "cfv"
+            "${CMAKE_BINARY_DIR}/test_game-${CMAKE_SYSTEM_NAME}-${CMAKE_CXX_COMPILER_ID}.zip" --format=zip .
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
